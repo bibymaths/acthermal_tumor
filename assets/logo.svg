@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </radialGradient>
+
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#334155" stroke-width="1" stroke-opacity="0.3" />
+    </pattern>
+
+    <radialGradient id="thermalGrad" cx="40%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FEF08A" />    <stop offset="25%" stop-color="#F97316" />   <stop offset="55%" stop-color="#E11D48" />   <stop offset="85%" stop-color="#7C3AED" />   <stop offset="100%" stop-color="#4C1D95" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect width="500" height="500" rx="60" fill="url(#bgGrad)" />
+  
+  <rect width="500" height="500" rx="60" fill="url(#grid)" />
+
+  <circle cx="250" cy="230" r="180" fill="#E11D48" opacity="0.1" filter="blur(20px)" />
+
+  <path d="M 250 90 
+           C 340 90, 410 140, 390 230 
+           C 370 320, 330 380, 240 370 
+           C 140 360, 110 300, 120 220 
+           C 130 130, 160 90, 250 90 Z" 
+        fill="url(#thermalGrad)" 
+        opacity="0.95" />
+
+  <path d="M 250 110 C 320 110, 380 150, 365 225 C 350 300, 310 350, 240 340 C 160 330, 135 285, 145 220 C 155 145, 180 110, 250 110 Z" 
+        fill="none" stroke="#FDE047" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6"/>
+  <path d="M 250 140 C 300 140, 345 170, 335 225 C 325 280, 290 320, 240 310 C 180 300, 165 265, 170 220 C 175 165, 195 140, 250 140 Z" 
+        fill="none" stroke="#FDE047" stroke-width="1" opacity="0.8"/>
+</svg>
