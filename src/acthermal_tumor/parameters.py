@@ -22,18 +22,18 @@ class Parameters:
     A: float
         Apoptosis (cell death) rate.  A positive constant that reduces
         the growth term.  When `(P * σ - A)` becomes negative the tumour
-        concentration tends to decrease【901098191607575†L118-L122】.
+        concentration tends to decrease.
     C: float
         Nutrient consumption rate.  A positive constant multiplying
-        `σ * h(φ)`【901098191607575†L110-L124】.
+        `σ * h(φ)`.
     B: float
         Blood–tissue transfer (supply) rate.  Governs the replenishment of
-        nutrient from the vasculature【901098191607575†L110-L124】.
+        nutrient from the vasculature.
     sigma_B: float
         Nutrient concentration in the blood (vascular) reservoir.  Must lie
-        between 0 and 1 in the non‑dimensional formulation【901098191607575†L480-L483】.
+        between 0 and 1 in the non‑dimensional formulation.
     q: int
-        Exponent used in the heat conductivity `kappa(θ) = 1 + |θ|^q`【901098191607575†L470-L474】.
+        Exponent used in the heat conductivity `kappa(θ) = 1 + |θ|^q`.
     dt: float
         Time‑step size for the numerical integration.
     dx: float
