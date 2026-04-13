@@ -11,7 +11,7 @@ examples to get you started.
 The non‑isothermal Allen–Cahn model couples tumour cell concentration
 (`φ`), temperature (`θ`) and nutrient concentration (`σ`).  After
 non‑dimensionalisation and with homogeneous Neumann boundary
-conditions the system can be written as【901098191607575†L493-L502】
+conditions the system can be written as
 
 ```text
 ∂t φ = Δφ − F′(φ) + θ + (P σ − A) h(φ)
@@ -21,12 +21,12 @@ conditions the system can be written as【901098191607575†L493-L502】
 
 Here the Laplacian `Δ` and the gradient/divergence operators act in
 space.  The derivative of the double‑well potential is
-`F′(φ) = 4 φ³ − 6 φ² + 2 φ`【901098191607575†L460-L476】, the activation
-function `h` is monotone increasing with `h(0) = 0`【901098191607575†L460-L469】 and
-the conductivity is `κ(θ) = 1 + |θ|^q`【901098191607575†L470-L474】.  Positive
+`F′(φ) = 4 φ³ − 6 φ² + 2 φ`, the activation
+function `h` is monotone increasing with `h(0) = 0` and
+the conductivity is `κ(θ) = 1 + |θ|^q`.  Positive
 constants `P`, `A`, `C`, `B` and `σ_B` control proliferation,
 apoptosis, nutrient consumption, nutrient supply and vascular nutrient
-concentration respectively【901098191607575†L110-L124】.
+concentration respectively.
 
 ## Installation
 
