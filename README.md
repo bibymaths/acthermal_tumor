@@ -33,8 +33,12 @@ temperature), and ($\sigma$) (nutrient) co-evolve.
 
 At early times, the tumour is still close to its initial condition (typically a small localized region).
 
-* The tumour interface is **sharp but beginning to diffuse** due to the Allen–Cahn term ($\Delta \varphi - F'(
-  \varphi)$).
+* The tumour interface is **sharp but beginning to diffuse** due to the Allen–Cahn term 
+
+$$
+\Delta \varphi - F'(\varphi)
+$$
+
 * Temperature ($\theta$) starts to increase locally where tumour growth occurs because of the source term (
   $\varphi_t^2$).
 * Nutrient ($\sigma$) remains **nearly uniform**, with only slight depletion near the tumour.
