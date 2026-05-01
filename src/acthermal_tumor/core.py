@@ -11,7 +11,6 @@ boundary conditions on a regular grid.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
 
 import jax
 import jax.numpy as jnp
@@ -46,15 +45,13 @@ class State:
     theta: jnp.ndarray
     sigma: jnp.ndarray
 
-    def __add__(self, other: 'State') -> 'State':
-        return State(self.phi + other.phi,
-                     self.theta + other.theta,
-                     self.sigma + other.sigma)
+    def __add__(self, other: State) -> State:
+        return State(
+            self.phi + other.phi, self.theta + other.theta, self.sigma + other.sigma
+        )
 
-    def __mul__(self, scalar: float) -> 'State':
-        return State(self.phi * scalar,
-                     self.theta * scalar,
-                     self.sigma * scalar)
+    def __mul__(self, scalar: float) -> State:
+        return State(self.phi * scalar, self.theta * scalar, self.sigma * scalar)
 
     __rmul__ = __mul__
 
@@ -88,7 +85,7 @@ def double_well_potential(phi: jnp.ndarray) -> jnp.ndarray:
     array_like
         Value of the potential at each point.
     """
-    return phi ** 2 * (1.0 - phi) ** 2
+    return phi**2 * (1.0 - phi) ** 2
 
 
 def double_well_prime(phi: jnp.ndarray) -> jnp.ndarray:
@@ -96,7 +93,7 @@ def double_well_prime(phi: jnp.ndarray) -> jnp.ndarray:
 
     Computes F′(φ) = 4 φ³ − 6 φ² + 2 φ.
     """
-    return 4.0 * phi ** 3 - 6.0 * phi ** 2 + 2.0 * phi
+    return 4.0 * phi**3 - 6.0 * phi**2 + 2.0 * phi
 
 
 def activation_function(phi: jnp.ndarray) -> jnp.ndarray:
@@ -180,16 +177,16 @@ def laplacian_neumann(u: jnp.ndarray, dx: float) -> jnp.ndarray:
         fwd = _shift_forward_neumann(u, axis)
         bwd = _shift_backward_neumann(u, axis)
         lap = lap + (fwd - 2.0 * u + bwd)
-    return lap / (dx ** 2)
+    return lap / (dx**2)
 
 
-def gradient_neumann(u: jnp.ndarray, dx: float) -> List[jnp.ndarray]:
+def gradient_neumann(u: jnp.ndarray, dx: float) -> list[jnp.ndarray]:
     """Compute the gradient of a scalar field with Neumann boundaries.
 
     Central differences are used in each spatial dimension and ghost
     values are mirrored to satisfy the zero normal derivative condition.
     """
-    grads: List[jnp.ndarray] = []
+    grads: list[jnp.ndarray] = []
     for axis in range(u.ndim):
         fwd = _shift_forward_neumann(u, axis)
         bwd = _shift_backward_neumann(u, axis)
@@ -197,7 +194,7 @@ def gradient_neumann(u: jnp.ndarray, dx: float) -> List[jnp.ndarray]:
     return grads
 
 
-def divergence_neumann(vector_components: List[jnp.ndarray], dx: float) -> jnp.ndarray:
+def divergence_neumann(vector_components: list[jnp.ndarray], dx: float) -> jnp.ndarray:
     """Compute the divergence of a vector field with Neumann boundaries.
 
     Each component of the vector field must have the same shape.  A
@@ -228,22 +225,31 @@ def rhs(state: State, params: Parameters) -> State:
     lap_sigma = laplacian_neumann(sigma, dx)
 
     # Allen–Cahn equation
-    phi_t = lap_phi - double_well_prime(phi) + theta + (params.P * sigma - params.A) * activation_function(phi)
+    phi_t = (
+        lap_phi
+        - double_well_prime(phi)
+        + theta
+        + (params.P * sigma - params.A) * activation_function(phi)
+    )
 
     # Temperature equation: ∂tθ = div(κ(θ)∇θ) + φ_t² − θ φ_t
     theta_grad = gradient_neumann(theta, dx)
     conductivity = kappa(theta, q=params.q)
     flux_components = [conductivity * g for g in theta_grad]
     div_flux = divergence_neumann(flux_components, dx)
-    theta_t = div_flux + phi_t ** 2 - theta * phi_t
+    theta_t = div_flux + phi_t**2 - theta * phi_t
 
     # Nutrient equation
-    sigma_t = lap_sigma - params.C * sigma * activation_function(phi) + params.B * (params.sigma_B - sigma)
+    sigma_t = (
+        lap_sigma
+        - params.C * sigma * activation_function(phi)
+        + params.B * (params.sigma_B - sigma)
+    )
 
     return State(phi_t, theta_t, sigma_t)
 
 
-def build_spectral_laplace(shape: Tuple[int, ...], dx: float) -> Optional[object]:
+def build_spectral_laplace(shape: tuple[int, ...], dx: float) -> object | None:
     """Create a spectral Laplace operator using exponax, if available.
 
     Exponax operates on periodic domains.  Neumann conditions can be
@@ -254,7 +260,9 @@ def build_spectral_laplace(shape: Tuple[int, ...], dx: float) -> Optional[object
         return None
     lengths = tuple(n * dx for n in shape)
     try:
-        laplace = exponax.LinearOperators.laplace_operator(lengths=lengths, dim=len(shape))
+        laplace = exponax.LinearOperators.laplace_operator(
+            lengths=lengths, dim=len(shape)
+        )
     except Exception:
         laplace = None
     return laplace

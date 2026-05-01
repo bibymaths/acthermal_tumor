@@ -8,8 +8,8 @@ initial conditions.
 
 from importlib.metadata import version as _pkg_version
 
-from .solver import ThermalTumorSimulator
 from .parameters import Parameters
+from .solver import ThermalTumorSimulator
 from .utils import generate_initial_conditions, plot_state
 
 __all__ = [

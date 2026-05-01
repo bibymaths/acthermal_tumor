@@ -17,7 +17,9 @@ from acthermal_tumor.utils import generate_initial_conditions, plot_state
 def main() -> None:
     shape = (64, 64)
     # Favorable growth parameters
-    params = Parameters(P=2.5, A=0.5, C=1.0, B=0.8, sigma_B=1.0, q=2, dt=1e-3, dx=1.0 / 64)
+    params = Parameters(
+        P=2.5, A=0.5, C=1.0, B=0.8, sigma_B=1.0, q=2, dt=1e-3, dx=1.0 / 64
+    )
 
     phi0, theta0, sigma0 = generate_initial_conditions(shape, radius_fraction=0.05)
     sim = ThermalTumorSimulator(shape=shape, params=params)
@@ -44,11 +46,17 @@ def main() -> None:
 
     # Plot the mass growth curve
     plt.figure(figsize=(8, 4))
-    plt.plot(time_history, mass_history, label='Total Tumor Mass ($\int \phi$)', color='firebrick', lw=2)
-    plt.xlabel('Time')
-    plt.ylabel('Mass')
-    plt.title('Tumor Growth Dynamics Over Time')
-    plt.grid(True, linestyle='--', alpha=0.6)
+    plt.plot(
+        time_history,
+        mass_history,
+        label=r"Total Tumor Mass ($\int \phi$)",
+        color="firebrick",
+        lw=2,
+    )
+    plt.xlabel("Time")
+    plt.ylabel("Mass")
+    plt.title("Tumor Growth Dynamics Over Time")
+    plt.grid(True, linestyle="--", alpha=0.6)
     plt.legend()
     plt.tight_layout()
     plt.show()

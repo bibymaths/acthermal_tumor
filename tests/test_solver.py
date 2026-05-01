@@ -7,13 +7,18 @@ gracefully falls back to the finite‑difference implementation by
 disabling spectral operators.
 """
 
+import os
+import sys
+
 import pytest
+
+from acthermal_tumor.parameters import Parameters
+from acthermal_tumor.solver import ThermalTumorSimulator
+from acthermal_tumor.utils import generate_initial_conditions
 
 # Attempt to import jax.numpy; skip tests if JAX is unavailable
 jnp = pytest.importorskip("jax.numpy", reason="jax is required to run the solver tests")
 
-import os
-import sys
 
 # Add the project's src directory to the Python path so that
 # `acthermal_tumor` can be imported without installation.
@@ -22,15 +27,13 @@ PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, os.pardir, "src"))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-from acthermal_tumor.parameters import Parameters
-from acthermal_tumor.solver import ThermalTumorSimulator
-from acthermal_tumor.utils import generate_initial_conditions
-
 
 def test_solver_runs_without_nan() -> None:
     """Run the simulator for a few steps and ensure no NaNs arise."""
     shape = (32, 32)
-    params = Parameters(P=1.0, A=0.5, C=1.0, B=0.2, sigma_B=1.0, q=2, dt=1e-3, dx=1.0 / 32)
+    params = Parameters(
+        P=1.0, A=0.5, C=1.0, B=0.2, sigma_b=1.0, q=2, dt=1e-3, dx=1.0 / 32
+    )
     phi0, theta0, sigma0 = generate_initial_conditions(shape, radius_fraction=0.1)
 
     sim = ThermalTumorSimulator(shape=shape, params=params, use_spectral=False)
