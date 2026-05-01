@@ -1,12 +1,12 @@
 [project]
 name = "acthermal_tumor"
-version = "0.2.0"
+version = "0.3.0"
 description = "A non-isothermal Allen-Cahn tumor growth simulator using JAX and exponax"
 authors = [
   { name = "Abhinav Mishra", email = "mishraabhinav36@gmail.com" }
 ]
 readme = {file = "README.md", content-type = "text/markdown"}
-requires-python = ">=3.10,<4"
+requires-python = "==3.12"
 license = { text = "MIT" }
 
 dependencies = [

@@ -40,34 +40,68 @@ jobs:
         run: uv sync --extra dev
 
       - name: Run tests
-        run: uv run pytest --cov=src/acthermal_tumor --cov-report=term-missing
+        run: uv run pytest --cov=src/acthermal_tumor --cov-report=term-missing --cov-report=xml:coverage.xml
 
       - name: Generate coverage badge
         if: matrix.python-version == '3.12'
-        uses: tj-actions/coverage-badge-py@v2
+        run: |
+          python - <<'PYEOF'
+          import xml.etree.ElementTree as ET
 
-      - name: Commit coverage badge if changed
+          tree = ET.parse("coverage.xml")
+          pct = round(float(tree.getroot().attrib["line-rate"]) * 100, 1)
+
+          if pct >= 90:
+              color = "#4c1"
+          elif pct >= 70:
+              color = "#dfb317"
+          else:
+              color = "#e05d44"
+
+          label = "coverage"
+          value = f"{pct}%"
+          lw, vw = 70, 56
+          total = lw + vw
+
+          svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="{total}" height="20">
+            <linearGradient id="s" x2="0" y2="100%">
+              <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+              <stop offset="1" stop-opacity=".1"/>
+            </linearGradient>
+            <rect rx="3" width="{total}" height="20" fill="#555"/>
+            <rect rx="3" x="{lw}" width="{vw}" height="20" fill="{color}"/>
+            <rect x="{lw}" width="4" height="20" fill="{color}"/>
+            <rect rx="3" width="{total}" height="20" fill="url(#s)"/>
+            <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+              <text x="{lw//2}" y="15" fill="#010101" fill-opacity=".3">{label}</text>
+              <text x="{lw//2}" y="14">{label}</text>
+              <text x="{lw + vw//2}" y="15" fill="#010101" fill-opacity=".3">{value}</text>
+              <text x="{lw + vw//2}" y="14">{value}</text>
+            </g>
+          </svg>"""
+
+          with open("coverage.svg", "w") as f:
+              f.write(svg)
+
+          print(f"Coverage: {pct}%")
+          PYEOF
+
+      - name: Commit and push badge if changed
         if: matrix.python-version == '3.12'
-        uses: tj-actions/verify-changed-files@v20
-        id: badge_changed
-        with:
-          files: coverage.svg
-
-      - name: Push coverage badge
-        if: steps.badge_changed.outputs.files_changed == 'true' && matrix.python-version == '3.12'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add coverage.svg
-          git commit -m "chore: update coverage badge [skip ci]"
-          git push
+          # only commit if something actually changed
+          git diff --cached --quiet || git commit -m "chore: update coverage badge [skip ci]"
+          git push || true
 
       - name: Build package
         run: uv build
 
       - name: Upload dist artifacts
         if: matrix.python-version == '3.12'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v4
         with:
           name: python-package-distributions
           path: dist/

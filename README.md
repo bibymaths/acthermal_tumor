@@ -5,6 +5,8 @@
 # Non‑isothermal Allen–Cahn tumour growth model
 
 [![PyPI version](https://img.shields.io/pypi/v/acthermal-tumor.svg)](https://pypi.org/project/acthermal-tumor/)
+[![Python](https://img.shields.io/pypi/pyversions/acthermal-tumor.svg)](https://pypi.org/project/acthermal-tumor/)
+[![License](https://img.shields.io/pypi/l/acthermal-tumor.svg)](https://github.com/bibymaths/acthermal_tumor/blob/main/LICENSE)
 ![Tests](https://github.com/bibymaths/acthermal_tumor/actions/workflows/ci.yml/badge.svg)
 ![Coverage](https://raw.githubusercontent.com/bibymaths/acthermal_tumor/main/coverage.svg)
 
