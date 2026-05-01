@@ -1,10 +1,12 @@
 <div align="center">
-  <img src="assets/logo.svg" alt="acthermal_tumor logo" width="350" />
-</div> 
+  <img src="https://raw.githubusercontent.com/bibymaths/acthermal_tumor/main/assets/logo.svg" alt="acthermal_tumor logo" width="350" />
+</div>
 
 # Non‑isothermal Allen–Cahn tumour growth model
 
 [![PyPI version](https://img.shields.io/pypi/v/acthermal-tumor.svg)](https://pypi.org/project/acthermal-tumor/)
+![Tests](https://github.com/bibymaths/acthermal_tumor/actions/workflows/ci.yml/badge.svg)
+![Coverage](https://raw.githubusercontent.com/bibymaths/acthermal_tumor/main/coverage.svg)
 
 A reproducible, high–performance simulator for the **non‑isothermal Allen–Cahn tumour growth model**. This package
 implements a three‑variable partial differential equation system coupling tumour cell concentration, temperature and

@@ -5,6 +5,9 @@ on:
     tags:
       - "v*.*.*"
 
+permissions:
+  contents: write
+
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
@@ -12,21 +15,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12"]
+        python-version: ["3.12"]
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@v5
         with:
-          version: "0.8.15"
           enable-cache: true
 
       - name: Show versions
@@ -38,14 +40,34 @@ jobs:
         run: uv sync --extra dev
 
       - name: Run tests
-        run: uv run pytest -q
+        run: uv run pytest --cov=src/acthermal_tumor --cov-report=term-missing
+
+      - name: Generate coverage badge
+        if: matrix.python-version == '3.12'
+        uses: tj-actions/coverage-badge-py@v2
+
+      - name: Commit coverage badge if changed
+        if: matrix.python-version == '3.12'
+        uses: tj-actions/verify-changed-files@v20
+        id: badge_changed
+        with:
+          files: coverage.svg
+
+      - name: Push coverage badge
+        if: steps.badge_changed.outputs.files_changed == 'true' && matrix.python-version == '3.12'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add coverage.svg
+          git commit -m "chore: update coverage badge [skip ci]"
+          git push
 
       - name: Build package
         run: uv build
 
       - name: Upload dist artifacts
         if: matrix.python-version == '3.12'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: python-package-distributions
           path: dist/
