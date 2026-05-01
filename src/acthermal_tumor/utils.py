@@ -1,28 +1,27 @@
 """Utility routines for initial conditions and visualisation.
 
- The functions in this module generate biologically plausible
- initial conditions for the tumour growth model and provide simple
- plotting helpers.  These routines depend only on NumPy/matplotlib and
- do not require JAX.
- """
+The functions in this module generate biologically plausible
+initial conditions for the tumour growth model and provide simple
+plotting helpers.  These routines depend only on NumPy/matplotlib and
+do not require JAX.
+"""
 
 from __future__ import annotations
 
-from typing import Tuple
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 from .core import State
 
 
 def generate_initial_conditions(
-        shape: Tuple[int, ...],
-        radius_fraction: float = 0.1,
-        tumour_value: float = 1.0,
-        background_value: float = 0.0,
-        theta_value: float = 0.0,
-        sigma_value: float = 1.0,
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    shape: tuple[int, ...],
+    radius_fraction: float = 0.1,
+    tumour_value: float = 1.0,
+    background_value: float = 0.0,
+    theta_value: float = 0.0,
+    sigma_value: float = 1.0,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Generate simple initial conditions for testing.
 
     A small spherical (or circular) tumour of radius `radius_fraction` times
@@ -56,7 +55,7 @@ def generate_initial_conditions(
     # Radial distance from centre
     r2 = np.zeros(shape)
     for g in grids:
-        r2 += g ** 2
+        r2 += g**2
     r = np.sqrt(r2)
     # Determine radius relative to the smallest dimension
     radius = radius_fraction * 0.5

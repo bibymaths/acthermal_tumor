@@ -1,13 +1,12 @@
 """Parameter definitions for the non‑isothermal Allen–Cahn model.
 
- This module defines a `Parameters` dataclass encapsulating all physical
- constants and numerical settings used in the simulator.  By grouping
- parameters into a structured object we simplify passing them between
- functions and enable type checking.
- """
+This module defines a `Parameters` dataclass encapsulating all physical
+constants and numerical settings used in the simulator.  By grouping
+parameters into a structured object we simplify passing them between
+functions and enable type checking.
+"""
 
 from dataclasses import dataclass
-from typing import Tuple
 
 
 @dataclass
@@ -29,7 +28,7 @@ class Parameters:
     B: float
         Blood–tissue transfer (supply) rate.  Governs the replenishment of
         nutrient from the vasculature【901098191607575†L110-L124】.
-    sigma_B: float
+    sigma_b: float
         Nutrient concentration in the blood (vascular) reservoir.  Must lie
         between 0 and 1 in the non‑dimensional formulation【901098191607575†L480-L483】.
     q: int
@@ -44,7 +43,7 @@ class Parameters:
     A: float
     C: float
     B: float
-    sigma_B: float
+    sigma_b: float
     q: int = 2
     dt: float = 1e-3
     dx: float = 1.0 / 64

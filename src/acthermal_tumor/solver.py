@@ -9,12 +9,11 @@ fourth‑order Runge–Kutta scheme and JAX's JIT compiler for speed.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Tuple, Optional
 
 import jax
 import jax.numpy as jnp
 
-from .core import State, rhs, build_spectral_laplace
+from .core import State, build_spectral_laplace, rhs
 from .parameters import Parameters
 
 
@@ -37,7 +36,7 @@ class ThermalTumorSimulator:
         solver falls back to finite‑difference operators.
     """
 
-    shape: Tuple[int, ...]
+    shape: tuple[int, ...]
     params: Parameters
     use_spectral: bool = True
 
@@ -59,8 +58,10 @@ class ThermalTumorSimulator:
         # avoid approaching the limit too closely.  If the user‑specified
         # dt is smaller than the stability bound, we use it directly.
         dims = len(self.shape)
-        stability_dt = (self.params.dx ** 2) / (4.0 * dims)
-        self._dt = self.params.dt if self.params.dt <= stability_dt else 0.5 * stability_dt
+        stability_dt = (self.params.dx**2) / (4.0 * dims)
+        self._dt = (
+            self.params.dt if self.params.dt <= stability_dt else 0.5 * stability_dt
+        )
 
         params = self.params
 
@@ -79,13 +80,19 @@ class ThermalTumorSimulator:
         # JIT compile the stepper for improved performance
         self._step_fn = jax.jit(_rk4_step)
 
-    def initialize_state(self, phi0: jnp.ndarray, theta0: jnp.ndarray, sigma0: jnp.ndarray) -> State:
+    def initialize_state(
+        self, phi0: jnp.ndarray, theta0: jnp.ndarray, sigma0: jnp.ndarray
+    ) -> State:
         """Create a `State` object from raw initial conditions.
 
         The shapes of `phi0`, `theta0` and `sigma0` must match the
         simulator's spatial `shape`.
         """
-        if phi0.shape != self.shape or theta0.shape != self.shape or sigma0.shape != self.shape:
+        if (
+            phi0.shape != self.shape
+            or theta0.shape != self.shape
+            or sigma0.shape != self.shape
+        ):
             raise ValueError(f"Initial conditions must have shape {self.shape}")
         return State(phi0, theta0, sigma0)
 
