@@ -10,7 +10,7 @@
 
 A reproducible, high–performance simulator for the **non‑isothermal Allen–Cahn tumour growth model**. This package
 implements a three‑variable partial differential equation system coupling tumour cell concentration, temperature and
-nutrient dynamics. The continuous model is derived in [Gatti *etal.*](https://doi.org/10.3934/cpaa.2026043) and
+nutrient dynamics. The continuous model is derived in [Gatti *et. al.*](https://doi.org/10.3934/cpaa.2026043) and
 describes the interplay of tumour proliferation, apoptosis, nutrient consumption and heat conduction. The equations are
 implemented in JAX and solved with either the `exponax` pseudo‑spectral framework (if available) or a fallback
 finite–difference scheme.
@@ -33,8 +33,12 @@ temperature), and ($\sigma$) (nutrient) co-evolve.
 
 At early times, the tumour is still close to its initial condition (typically a small localized region).
 
-* The tumour interface is **sharp but beginning to diffuse** due to the Allen–Cahn term ($\Delta \varphi - F'(
-  \varphi)$).
+* The tumour interface is **sharp but beginning to diffuse** due to the Allen–Cahn term 
+
+$$
+\Delta \varphi - F'(\varphi)
+$$
+
 * Temperature ($\theta$) starts to increase locally where tumour growth occurs because of the source term (
   $\varphi_t^2$).
 * Nutrient ($\sigma$) remains **nearly uniform**, with only slight depletion near the tumour.
@@ -58,9 +62,11 @@ At intermediate times, nonlinear coupling becomes significant.
 
 **Interpretation:**
 This stage reflects **active tumour growth under resource constraints**. The coupling term
+
 $$
 (P\sigma - A)h(\varphi)
 $$
+
 starts to regulate growth: regions with lower nutrient slow down or stabilize.
 
 ---
@@ -74,9 +80,10 @@ At long times, the system approaches a steady or metastable configuration.
 * The tumour profile stabilizes into a **diffuse but stationary structure**.
 * Temperature equilibrates through diffusion ( \nabla \cdot (\kappa(\theta)\nabla\theta) ).
 * Nutrient reaches a **balance between consumption and supply**:
-  $$
-  -C\sigma h(\varphi) + B(\sigma_B - \sigma) \approx 0
-  $$
+
+$$
+-C\sigma h(\varphi) + B(\sigma_B - \sigma) \approx 0
+$$
 
 **Interpretation:**
 The system reaches a **dynamic equilibrium** where:

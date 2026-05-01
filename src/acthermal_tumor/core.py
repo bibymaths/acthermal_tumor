@@ -89,7 +89,7 @@ def double_well_potential(phi: jnp.ndarray) -> jnp.ndarray:
 
 
 def double_well_prime(phi: jnp.ndarray) -> jnp.ndarray:
-    """Derivative of the double‑well potential【901098191607575†L460-L476】.
+    """Derivative of the double‑well potential.
 
     Computes F′(φ) = 4 φ³ − 6 φ² + 2 φ.
     """
@@ -100,7 +100,7 @@ def activation_function(phi: jnp.ndarray) -> jnp.ndarray:
     """Smooth activation function h(φ).
 
     A smooth approximation of `max(0, φ)`.  The model requires
-    `h` to be monotone increasing, bounded and satisfy h(0)=0【901098191607575†L460-L469】.
+    `h` to be monotone increasing, bounded and satisfy h(0)=0.
     A shifted softplus is used: `h(φ) = softplus(φ) - log(2)` so that h(0)=0.
     """
     return jax.nn.softplus(phi) - jnp.log(2.0)
@@ -213,7 +213,7 @@ def rhs(state: State, params: Parameters) -> State:
 
     Returns a `State` containing time derivatives `(φ_t, θ_t, σ_t)`
     evaluated at the current state.  The derivative of φ is computed
-    first because it appears in the temperature equation【901098191607575†L493-L502】.
+    first because it appears in the temperature equation.
     """
     phi = state.phi
     theta = state.theta
