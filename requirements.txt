@@ -46,7 +46,7 @@ opt-einsum==3.4.0
     # via jax
 packaging==26.2
     # via matplotlib
-pillow==12.2.0
+pillow==12.3.0
     # via matplotlib
 pyparsing==3.3.2
     # via matplotlib
